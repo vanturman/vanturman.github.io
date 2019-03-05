@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is easy, show me the code. 不如写个很简单的代码验证下。    #include &amp;lt;iostream&amp;gt; usin">
+<meta name="description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is cheap, show me the code. 不如写个很简单的代码验证下。123456789101112131415161718192021">
 <meta name="keywords" content="C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++中多个对象共享虚函数表">
 <meta property="og:url" content="http://yoursite.com/2019/03/05/C-中多个对象共享虚函数表/index.html">
 <meta property="og:site_name" content="杨寒冬的博客">
-<meta property="og:description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is easy, show me the code. 不如写个很简单的代码验证下。    #include &amp;lt;iostream&amp;gt; usin">
+<meta property="og:description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is cheap, show me the code. 不如写个很简单的代码验证下。123456789101112131415161718192021">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-05T07:15:01.637Z">
+<meta property="og:updated_time" content="2019-03-05T08:07:33.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++中多个对象共享虚函数表">
-<meta name="twitter:description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is easy, show me the code. 不如写个很简单的代码验证下。    #include &amp;lt;iostream&amp;gt; usin">
+<meta name="twitter:description" content="今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。先说答案，答案肯定是同一个类下面的多个对象共享一个虚函数表。由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is cheap, show me the code. 不如写个很简单的代码验证下。123456789101112131415161718192021">
 
 
 
@@ -320,26 +320,19 @@
       
 
       
-        <p>今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。<br>先说答案，答案肯定是<strong>同一个类下面的多个对象共享一个虚函数表</strong>。<br>由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is easy, show me the code. 不如写个很简单的代码验证下。   </p>
-<pre><code>#include &lt;iostream&gt;
-using namespace std;
+        <p>今天有个同学问我一个有关C++中的虚函数问题，“C++中同一个类下面的多个对象是否共享一个虚函数表”。<br>先说答案，答案肯定是<strong>同一个类下面的多个对象共享一个虚函数表</strong>。<br>由于印象不够深刻，担心误导同学，我搜了下资料，发现有些说是共享有些说不共享。 talk is cheap, show me the code. 不如写个很简单的代码验证下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class Base &#123;</span><br><span class="line">public:</span><br><span class="line">	virtual void Base_print() &#123;</span><br><span class="line">		cout &lt;&lt; &quot;Base print&quot; &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main(int argc, char ** argv) &#123;</span><br><span class="line">	Base a[3];</span><br><span class="line">	for (int i = 0; i &lt; 3; i++) &#123;</span><br><span class="line">		cout &lt;&lt; i &lt;&lt; &quot; vtbl: &quot; &lt;&lt; *(int *)(&amp;a[i]) &lt;&lt; endl;</span><br><span class="line">		cout &lt;&lt; i &lt;&lt; &quot; Base_print: &quot; &lt;&lt; *(int *)*(int *)(&amp;a[i]) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125; </span><br><span class="line">```   </span><br><span class="line">在函数里实例化了三个 Base 对象，循环打印每个对象的 （1）虚函数表的地址 （2）虚函数表中第一个表项的内容，即第一个虚函数的地址。  </span><br><span class="line">执行结果如下：  </span><br><span class="line">![avatar][base64str]</span><br><span class="line"></span><br><span class="line">显然，同一个类下的多个对象共享一个虚函数表，这个和C++的特点有关，也符合节约存储的要求。    </span><br><span class="line">说到这里就多说一点，在C语言中，数据和函数是分开声明的，并没有在语言层面支持“数据和函数”之间的绑定。  </span><br><span class="line">在C++中，一般通过类将数据和函数绑定在一起，称为 抽象数据类型(ADT)。  </span><br><span class="line">如果我们想要输出一个二维空间中某个点的坐标，使用C和C++的实现思路分别如下：</span><br><span class="line">- 在C语言中我们一般会将结构体和函数结合使用：</span><br></pre></td></tr></table></figure></p>
+<p>/<strong><em> C语言 </em></strong>/<br>typedef struct Point2d {<br>    float x;<br>    float y;<br>}Point2d;</p>
+<p>void print(const Point2d *p) {<br>    printf(“(%f , %f)\n”, p-&gt;x, p-&gt;y);<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 在C++中，直接定义一个类，将数据和函数封装在类内就可以了:</span><br></pre></td></tr></table></figure>
+<p>class Point2d {<br>public:<br>    Point3d(float x = 0.0, float y = 0.0) : _x(x), _y(y){}</p>
+<pre><code>float get_x() {return _x;}
+float get_y() {return _y;}
 
-class Base {
-public:
-    virtual void Base_print() {
-        cout &lt;&lt; &quot;Base print&quot; &lt;&lt; endl;
-    }
-};
-
-int main(int argc, char ** argv) {
-    Base a[3];
-    for (int i = 0; i &lt; 3; i++) {
-        cout &lt;&lt; i &lt;&lt; &quot; vtbl: &quot; &lt;&lt; *(int *)(&amp;a[i]) &lt;&lt; endl;
-        cout &lt;&lt; i &lt;&lt; &quot; Base_print: &quot; &lt;&lt; *(int *)*(int *)(&amp;a[i]) &lt;&lt; endl;
-    }
-    return 0;
+ostream &amp;operator&lt;&lt; (ostream &amp;os, const Point2d &amp;p) {
+    os &lt;&lt; &quot;(&quot; &lt;&lt; p.get_x() &lt;&lt; &quot; , &quot; &lt;&lt; p.get_y() &lt;&lt; &quot;)&quot; &lt;&lt; endl;
 } 
-</code></pre>
+</code></pre><p>private:<br>    float _x;<br>    float _y;<br>};<br><code>`</code><br>如果不包含虚函数和虚继承的情况下，C++中封装并不会带来空间和执行期的效率影响。等过两天，我回再写一个博客详细介绍下C++中对象模型并分析下上述情况带来的影响。<br>回到本次博客的主题，<strong>同一个类的多个对象会共享一个虚函数表</strong>，这样也符合我们正常的思维，因为普通的虚函数并不属于某一个对象，而是属于该类中所有的对象。  </p>
+
       
     </div>
     
