@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="杨寒冬的博客">
 <meta property="og:description" content="C++编译后的程序一般分为五个区域    栈区(stack)  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。     堆区(heap)  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。  全局区(static)  全局变量、静态变量">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-17T00:56:29.516Z">
+<meta property="og:updated_time" content="2019-03-17T00:58:00.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++程序内存布局">
 <meta name="twitter:description" content="C++编译后的程序一般分为五个区域    栈区(stack)  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。     堆区(heap)  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。  全局区(static)  全局变量、静态变量">
@@ -334,13 +334,13 @@
 </li>
 </ul>
 <p>下面是一个典型的C++代码示例：</p>
-<pre><code>int a = 0;     //全局初始化区 　　　　 
-char *p1; //全局未初始化区 　　　　 
+<pre><code>int a = 0;    //全局初始化区 　　　　 
+char *p1;    //全局未初始化区 　　　　 
 
 main() { 　　　　 　　
     int b;    //栈 　　　　 　　
     char s[] = &quot;abc&quot;;    //栈 　　　　 　　
-    char *p1, *p2;    //栈 　　　　 　　
+    char *p1, *p2;        //栈 　　　　 　　
     char *p3 = &quot;123456&quot;; //&quot;123456\0&quot;在常量区，p3在栈上 　　　　 　　
     static int c =0;     //全局（静态）初始化区 　　　　 　　
     p1 = (char *)malloc(10); 　 //分配的10字节区域在堆区。　　 　　
