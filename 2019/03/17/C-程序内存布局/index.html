@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="C++,">
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="杨寒冬的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="杨寒冬的博客">
-<meta property="og:url" content="http://yoursite.com/tags/生活/index.html">
+<meta name="description" content="C++编译后的程序一般分为五个区域    栈区(stack)  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。     堆区(heap)  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。  全局区(static)  全局变量、静态变量">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++程序内存布局">
+<meta property="og:url" content="http://yoursite.com/2019/03/17/C-程序内存布局/index.html">
 <meta property="og:site_name" content="杨寒冬的博客">
-<meta property="og:description" content="杨寒冬的博客">
+<meta property="og:description" content="C++编译后的程序一般分为五个区域    栈区(stack)  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。     堆区(heap)  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。  全局区(static)  全局变量、静态变量">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-17T00:50:16.722Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="杨寒冬的博客">
-<meta name="twitter:description" content="杨寒冬的博客">
+<meta name="twitter:title" content="C++程序内存布局">
+<meta name="twitter:description" content="C++编译后的程序一般分为五个区域    栈区(stack)  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。     堆区(heap)  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。  全局区(static)  全局变量、静态变量">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/生活/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/17/C-程序内存布局/">
 
 
 
 
 
-  <title>Tag: 生活 | 杨寒冬的博客</title>
+  <title>C++程序内存布局 | 杨寒冬的博客</title>
   
 
 
@@ -143,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -237,52 +239,173 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>生活<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/C-程序内存布局/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="杨寒冬">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨寒冬的博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/03/05/Start-New-Blog/" itemprop="url">
-              
-                <span itemprop="name">Start New Blog</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">C++程序内存布局</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-05T00:05:53+08:00" content="2019-03-05">
-          03-05
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-17T08:45:40+08:00">
+                2019-03-17
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    </div>
+      
 
+      
+        <p>C++编译后的程序一般分为五个区域  </p>
+<ul>
+<li><p><strong>栈区(stack)</strong><br>  由编译器自动分配/释放，存放函数的参数值，局部变量值等。栈的操作方式类似数据结构中的栈。   </p>
+</li>
+<li><p><strong>堆区(heap)</strong><br>  由程序员手动分配/释放，如果程序员不释放，程序结束回收。heap和数据结构中的堆没关系，分配方式类似链表。C++中使用 malloc/free 或 new/delete。</p>
+</li>
+<li><p><strong>全局区(static)</strong><br>  全局变量、静态变量存储的区域。初始化的全局变量和静态变量在一块区域，未初始化的全局变量和静态变量在相邻的另一块区域里。</p>
+</li>
+<li><p><strong>文字常量区</strong><br>  常量字符串存储的区域。</p>
+</li>
+<li><p><strong>程序代码区</strong><br>  函数二进制代码的存储区域。  </p>
+</li>
+</ul>
+<p>下面是一个典型的C++代码示例：</p>
+<pre><code>int a = 0;     //全局初始化区 　　　　 
+char *p1;     //全局未初始化区 　　　　 
+
+main() { 　　　　 　　
+    int b;        //栈 　　　　 　　
+    char s[] = &quot;abc&quot;;    //栈 　　　　 　　
+    char *p1, *p2;         //栈 　　　　 　　
+    char *p3 = &quot;123456&quot;; //&quot;123456\0&quot;在常量区，p3在栈上 　　　　 　　
+    static int c =0;     //全局（静态）初始化区 　　　　 　　
+    p1 = (char *)malloc(10); 　 //分配的10字节区域在堆区。　　 　　
+    p2 = (char *)malloc(20);    //分配的20字节区域在堆区 　　　　 　　
+    strcpy(p1, &quot;123456&quot;); //&quot;123456\0&quot;在常量区，编译器可能会将它与p3所指向的&quot;123456&quot;优化成一个地方　　　　 
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/05/C-中多个对象共享虚函数表/" rel="next" title="C++中多个对象共享虚函数表">
+                <i class="fa fa-chevron-left"></i> C++中多个对象共享虚函数表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -290,6 +413,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -502,6 +629,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
