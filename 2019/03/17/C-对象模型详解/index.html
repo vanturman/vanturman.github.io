@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E7%AE%80%E5%8D%95%E8%99%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E8%99%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E8%A7%86%E5%9B%BE.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E8%99%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png">
-<meta property="og:updated_time" content="2019-03-19T03:22:49.613Z">
+<meta property="og:updated_time" content="2019-03-19T03:24:52.200Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++对象模型详解">
 <meta name="twitter:description" content="关于对象面向过程编程和面向对象编程 C语言是一个函数式编程语言，数据和函数式分开声明的，没有在语言层面支持“数据和函数”之间的绑定。   C++是面向对象的编程语言，通过class将数据和函数绑定在一起，成为抽象数据类型(ADT)。因此，在C++中引入了对象的概念，举一个简单的例子。如果我们需要用代码描述二维空间中某个点的坐标，使用C和C++实现分别如下：（a）C语言实现：     //结合str">
@@ -373,7 +373,7 @@ private:
 <p>有两个概念可以解释C++对象模型：<br>1.语言中直接支持面向对象程序设计的部分<br>2.对于各种支持的底层实现机制    </p>
 </blockquote>
 <p>下面会详细讨论几种对象模型，重点关注C++对象模型。后文中出现的所有代码和截图分析都是基于VISUAL STUDIO 2017下编译和实现的。</p>
-<h1 id="2-对象模型概述"><a href="#2-对象模型概述" class="headerlink" title="2. 对象模型概述"></a>2. 对象模型概述</h1><p>在1.3中已经指出，本文的关注点在C++对象在内存的布局，以及底层如何合理的设置内存布局来支持C++的继承、多态等特性。主要内容如下：  </p>
+<h1 id="对象模型概述"><a href="#对象模型概述" class="headerlink" title="对象模型概述"></a>对象模型概述</h1><p>在1.3中已经指出，本文的关注点在C++对象在内存的布局，以及底层如何合理的设置内存布局来支持C++的继承、多态等特性。主要内容如下：  </p>
 <ul>
 <li><strong>虚函数表和虚函数指针机制</strong>。含有虚函数或者父类含有虚函数的类，编译器会为其添加一个vtbl和vptr。引用示例：父类指针指向子类，通过父类指针可以访问子类的成员函数，从而实现多态。在该机制的支持下，通过delete父类指针，也可以释放子类的内存空间。虚函数表中存放着类中所有虚函数的地址。</li>
 <li><strong>对象模型介绍</strong>。主要介绍两种对象模型：(1)简单对象模型;(2)表格驱动模型。  </li>
@@ -398,17 +398,17 @@ private:
     int baseI;
     static int baseS;
 };
-</code></pre><p>Base类成员如下:<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/Base%E7%B1%BB%E6%88%90%E5%91%98.png" alt="avatar"></p>
-<h2 id="2-1-简单对象模型"><a href="#2-1-简单对象模型" class="headerlink" title="2.1 简单对象模型"></a>2.1 简单对象模型</h2><p>第一个模型非常简单，它的目的是为了尽可能降低C++编译器的设计复杂度，牺牲的是空间和时间。空间损失指的是：这样每一个class相比于C程序都会多出slots空间用来存储指针数组。时间损失指的是：object对成员的访问需要多一次寻址才能找到。<br>在简单对象模型中，一个object是一系列的slots，每一个slot指向一个member(五种类型之一)。member按照声明的次序排列。简单对象模型下Base类内存布局如下图所示：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E7%AE%80%E5%8D%95%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E4%B8%ADBase%E7%B1%BB%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="avatar"></p>
-<h2 id="2-2-表格驱动模型"><a href="#2-2-表格驱动模型" class="headerlink" title="2.2 表格驱动模型"></a>2.2 表格驱动模型</h2><p>简单对象模型虽然很简单，但是由于每个class的成员数量不同，所以其需要的空间也不同。表格驱动模型规范化了所有的class表达形式。表格驱动模型中，每个class有且仅有两个指针，一个指针指向member data table，另一个指针指向member function table。其中，member function table由一系列的slots组成，每一个slot指向一个member function。这样，访问data member需要一次寻址，member function需要两次寻址。这个模型并没有用到真正的C++编译器上。</p>
-<h1 id="3-C-对象模型"><a href="#3-C-对象模型" class="headerlink" title="3. C++对象模型"></a>3. C++对象模型</h1><p>在C++对象模型中，只有nonstatic data member被设置于每一个实例化的对象中，static data member、nonstatic member function和static member function都被置于对象之外。对于虚函数，通过引入<strong>虚函数表</strong>和<strong>虚指针</strong>来支持。  </p>
+</code></pre><p>Base类成员如下:<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/Base%E7%B1%BB%E6%88%90%E5%91%98.png" alt="avatar">  </p>
+<h2 id="简单对象模型"><a href="#简单对象模型" class="headerlink" title="简单对象模型"></a>简单对象模型</h2><p>第一个模型非常简单，它的目的是为了尽可能降低C++编译器的设计复杂度，牺牲的是空间和时间。空间损失指的是：这样每一个class相比于C程序都会多出slots空间用来存储指针数组。时间损失指的是：object对成员的访问需要多一次寻址才能找到。<br>在简单对象模型中，一个object是一系列的slots，每一个slot指向一个member(五种类型之一)。member按照声明的次序排列。简单对象模型下Base类内存布局如下图所示：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E7%AE%80%E5%8D%95%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E4%B8%ADBase%E7%B1%BB%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="avatar"></p>
+<h2 id="表格驱动模型"><a href="#表格驱动模型" class="headerlink" title="表格驱动模型"></a>表格驱动模型</h2><p>简单对象模型虽然很简单，但是由于每个class的成员数量不同，所以其需要的空间也不同。表格驱动模型规范化了所有的class表达形式。表格驱动模型中，每个class有且仅有两个指针，一个指针指向member data table，另一个指针指向member function table。其中，member function table由一系列的slots组成，每一个slot指向一个member function。这样，访问data member需要一次寻址，member function需要两次寻址。这个模型并没有用到真正的C++编译器上。</p>
+<h1 id="C-对象模型"><a href="#C-对象模型" class="headerlink" title="C++对象模型"></a>C++对象模型</h1><p>在C++对象模型中，只有nonstatic data member被设置于每一个实例化的对象中，static data member、nonstatic member function和static member function都被置于对象之外。对于虚函数，通过引入<strong>虚函数表</strong>和<strong>虚指针</strong>来支持。  </p>
 <ul>
 <li>每个类都有一个<strong>虚函数表</strong>，称为虚表(virtual table,简称vtbl)。虚表中存放着一堆指针，每一个指针指向类中的一个虚函数。类中所有虚函数指针按照声明的顺序存储在虚表中，当子类中有多个重载函数时例外。<strong>该类中所有对象共享一个虚函数表</strong>。</li>
 <li>每个类对象都拥有一个<strong>虚表指针</strong>，称为虚指针(virtual pointer,简称vptr)。虚指针的设定和重置都是通过类的<strong>构造函数、拷贝构造函数、析构函数、重载的赋值操作符</strong>来完成。vptr的位置由编译器决定，《深度探索C++对象模型》中提到的vptr一般放在所有显式声明的成员之后。不过现在很多编译器把vptr放在类对象的最前面。</li>
 <li>虚函数表除了存储很多指向虚函数的指针之外，还在最前面设置了一个指向<strong>type_info</strong>的指针，用来支持<strong>RTTI</strong>(Run Time Type Identification,即运行时类型识别)。RTTI是为了支持多态而生成的信息，包括对象继承关系、对象本身的描述等等，只在具有虚函数的对象中才会生成。  </li>
 </ul>
 <p>C++的对象模型包括(1)非继承(2)继承(3)多继承(4)虚继承。下面分别对四种C++对象模型进行详细的介绍。本章节主要介绍前三种，将在第四章中<br>重点介绍虚继承。</p>
-<h2 id="3-1-非继承下的C-对象模型"><a href="#3-1-非继承下的C-对象模型" class="headerlink" title="3.1 非继承下的C++对象模型"></a>3.1 非继承下的C++对象模型</h2><p>参照上面对(1)虚表(2)虚指针(3)type_info指针的介绍，在非继承下的C++内存布局如下图示：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E9%9D%9E%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E4%B8%ADBase%E7%B1%BB%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="avatar"><br>通过下面的代码可以验证上述C++内存模型：  </p>
+<h2 id="非继承下的C-对象模型"><a href="#非继承下的C-对象模型" class="headerlink" title="非继承下的C++对象模型"></a>非继承下的C++对象模型</h2><p>参照上面对(1)虚表(2)虚指针(3)type_info指针的介绍，在非继承下的C++内存布局如下图示：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E9%9D%9E%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E4%B8%ADBase%E7%B1%BB%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="avatar"><br>通过下面的代码可以验证上述C++内存模型：  </p>
 <pre><code>void testBase(Base &amp;p) {
     cout &lt;&lt; &quot;对象的内存起始地址：&quot; &lt;&lt; &amp;p &lt;&lt; endl;
     //type_info信息
@@ -434,7 +434,7 @@ private:
 <pre><code>Base b(66);
 testBase(b);
 </code></pre><p>结果如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E9%9D%9E%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8BCMD.png" alt="avatar"></p>
-<h2 id="3-2-单继承下的C-对象模型"><a href="#3-2-单继承下的C-对象模型" class="headerlink" title="3.2 单继承下的C++对象模型"></a>3.2 单继承下的C++对象模型</h2><p>在C++对象模型中，<strong>子类会继承父类的虚函数表(vtbl)</strong>。如果子类overwrite了父类的虚函数，就将从父类继承的虚函数表中相应项指向子类自己的虚函数；如果子类声明了新的虚函数，就在<strong>虚函数表的末尾</strong>添加一项指向新的虚函数的表象。<br>注意，本章的单继承和多继承再不特别声明的情况下，并不讨论虚继承的C++对象模型中，虚表的继承和修改方法。对于虚继承，如果子类overwrite父类虚函数，同样会在父类继承的虚函数表中相应项指向子类自己的虚函数；如果子类声明了新的虚函数，那么编译器将会为子类<strong>生成一个新的虚指针(vptr)</strong>。在第四章会详细介绍。<br>定义一个Derive类，代码如下： </p>
+<h2 id="单继承下的C-对象模型"><a href="#单继承下的C-对象模型" class="headerlink" title="单继承下的C++对象模型"></a>单继承下的C++对象模型</h2><p>在C++对象模型中，<strong>子类会继承父类的虚函数表(vtbl)</strong>。如果子类overwrite了父类的虚函数，就将从父类继承的虚函数表中相应项指向子类自己的虚函数；如果子类声明了新的虚函数，就在<strong>虚函数表的末尾</strong>添加一项指向新的虚函数的表象。<br>注意，本章的单继承和多继承再不特别声明的情况下，并不讨论虚继承的C++对象模型中，虚表的继承和修改方法。对于虚继承，如果子类overwrite父类虚函数，同样会在父类继承的虚函数表中相应项指向子类自己的虚函数；如果子类声明了新的虚函数，那么编译器将会为子类<strong>生成一个新的虚指针(vptr)</strong>。在第四章会详细介绍。<br>定义一个Derive类，代码如下： </p>
 <pre><code>class Derive : public Base {
 public:
     Derive(int val) : Base(66), DeriveI(val) {};
@@ -472,7 +472,7 @@ private:
 <pre><code>Derive d(666);
 testSingleDerive(d);
 </code></pre><p>结果如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E5%8D%95%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8BCMD.png" alt="avatar"></p>
-<h2 id="3-3-多继承下的C-对象模型"><a href="#3-3-多继承下的C-对象模型" class="headerlink" title="3.3 多继承下的C++对象模型"></a>3.3 多继承下的C++对象模型</h2><h3 id="3-3-1-普通多继承"><a href="#3-3-1-普通多继承" class="headerlink" title="3.3.1 普通多继承"></a>3.3.1 普通多继承</h3><p>普通多继承遵循上面介绍的通用原则。简单概述如下:  </p>
+<h2 id="多继承下的C-对象模型"><a href="#多继承下的C-对象模型" class="headerlink" title="多继承下的C++对象模型"></a>多继承下的C++对象模型</h2><h3 id="普通多继承"><a href="#普通多继承" class="headerlink" title="普通多继承"></a>普通多继承</h3><p>普通多继承遵循上面介绍的通用原则。简单概述如下:  </p>
 <ul>
 <li>子类继承<strong>多张</strong>来自父类的虚函数表且子类继承的若干张虚函数表按照声明的顺序依次排列    </li>
 <li>当子类overwrite虚函数表的时候，<strong>所有父类虚函数表中的对应项都会被overwrite</strong>   </li>
@@ -480,22 +480,22 @@ testSingleDerive(d);
 </ul>
 <p>继承类图如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E7%B1%BB%E8%A7%86%E5%9B%BE.png" alt="avatar"></p>
 <p>内存布局如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E5%A4%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="avatar"></p>
-<h3 id="3-3-2-菱形继承"><a href="#3-3-2-菱形继承" class="headerlink" title="3.3.2 菱形继承"></a>3.3.2 菱形继承</h3><p>菱形继承也叫做重复继承，指的是父类被某个子类重复继承了多次。这样，父类的同一个数据成员会在该子类中有多个拷贝，从而引发<strong>程序歧义</strong>。<br>继承类图如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E7%B1%BB%E5%9B%BE.png" alt="avatar"><br>如果我们按照之前的继承方式，直接从父类中继承并扩充父类的虚函数表，就会得到如下的内存布局图(该设计实际上未使用)：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png" alt="avatar"><br>在D类的内存布局中，会包含两个B类的ib数据成员，如下访问就会有问题： </p>
+<h3 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h3><p>菱形继承也叫做重复继承，指的是父类被某个子类重复继承了多次。这样，父类的同一个数据成员会在该子类中有多个拷贝，从而引发<strong>程序歧义</strong>。<br>继承类图如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E7%B1%BB%E5%9B%BE.png" alt="avatar"><br>如果我们按照之前的继承方式，直接从父类中继承并扩充父类的虚函数表，就会得到如下的内存布局图(该设计实际上未使用)：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png" alt="avatar"><br>在D类的内存布局中，会包含两个B类的ib数据成员，如下访问就会有问题： </p>
 <pre><code>D d;
 d.ib =1; //二义性错误,调用的是B1的ib还是B2的ib？
 </code></pre><p>尽管我们可以通过指明调用路径来消除歧义，但是二义性的潜在性并没有消除。在C++中，通过<strong>虚继承可以解决菱形继承的二义性问题</strong>。</p>
-<h1 id="4-虚继承下的C-对象模型"><a href="#4-虚继承下的C-对象模型" class="headerlink" title="4. 虚继承下的C++对象模型"></a>4. 虚继承下的C++对象模型</h1><p>虚继承是为了解决菱形继承中，子类包含某个间接父类的多个数据成员问题的。在上一章介绍的单继承和普通多继承中，子类直接继承并扩展父类的虚函数表，虚继承中则完全不同。  </p>
+<h1 id="虚继承下的C-对象模型"><a href="#虚继承下的C-对象模型" class="headerlink" title="虚继承下的C++对象模型"></a>虚继承下的C++对象模型</h1><p>虚继承是为了解决菱形继承中，子类包含某个间接父类的多个数据成员问题的。在上一章介绍的单继承和普通多继承中，子类直接继承并扩展父类的虚函数表，虚继承中则完全不同。  </p>
 <ul>
 <li>虚继承的子类，如果本身定义了新的虚函数，那么编译器就会为它<strong>新生成一个虚函数指针和一个虚函数表</strong>，放在对象内存的最前面。VS非虚继承：直接扩展父类的虚函数表。</li>
 <li>虚继承的子类也保留了父类的虚函数指针和虚函数表，父类子类的内容之间使用四字节的0来分界。  </li>
 <li>虚继承时内存中存储了一个指向偏移数组的指针<strong>(vbptr)</strong>，分别指向自己的vptr和父类的vptr与当前位置的偏移。<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%A1%A8%E8%A7%A3%E6%9E%90.png" alt="avatar"></li>
 </ul>
-<h2 id="4-1-简单虚继承下的C-对象模型"><a href="#4-1-简单虚继承下的C-对象模型" class="headerlink" title="4.1 简单虚继承下的C++对象模型"></a>4.1 简单虚继承下的C++对象模型</h2><p>假设只有两个类 B 和 B1，B1虚继承于类B:</p>
+<h2 id="简单虚继承下的C-对象模型"><a href="#简单虚继承下的C-对象模型" class="headerlink" title="简单虚继承下的C++对象模型"></a>简单虚继承下的C++对象模型</h2><p>假设只有两个类 B 和 B1，B1虚继承于类B:</p>
 <pre><code>class B{...}
 class B1 : virtual public B
 </code></pre><p>继承类图如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E7%AE%80%E5%8D%95%E8%99%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%B1%BB%E8%A7%86%E5%9B%BE.png" alt="avatar"></p>
 <p>内存布局如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E7%AE%80%E5%8D%95%E8%99%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png" alt="avatar"></p>
-<h2 id="4-2-菱形继承下的C-对象模型"><a href="#4-2-菱形继承下的C-对象模型" class="headerlink" title="4.2 菱形继承下的C++对象模型"></a>4.2 菱形继承下的C++对象模型</h2><p>菱形虚继承和普通虚继承存在区别：  </p>
+<h2 id="菱形继承下的C-对象模型"><a href="#菱形继承下的C-对象模型" class="headerlink" title="菱形继承下的C++对象模型"></a>菱形继承下的C++对象模型</h2><p>菱形虚继承和普通虚继承存在区别：  </p>
 <ul>
 <li>在D的内存布局中，基类的出现顺序和声明顺序相同，即 B1, B2, B</li>
 <li>D的nonstatic data member放在B2之后，B之前，和B之间使用0分隔。</li>
@@ -508,7 +508,7 @@ class B2: virtual public  B{...}
 class D : public B1,public B2{...}
 </code></pre><p>菱形虚继承的类图如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E8%99%9A%E7%BB%A7%E6%89%BF%E7%B1%BB%E8%A7%86%E5%9B%BE.png" alt="avatar"></p>
 <p>内存布局如下：<br><img src="https://raw.githubusercontent.com/vanturman/Blog-Photos/master/Pictures/C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/%E8%8F%B1%E5%BD%A2%E8%99%9A%E7%BB%A7%E6%89%BF%E4%B8%8B%E7%9A%84C%2B%2B%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B.png" alt="avatar"></p>
-<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p>在上面的介绍中，我们详细分析了C++对象模型，并且就简单继承给出了验证代码。C++的对象模型中，主要包含如下模型：  </p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在上面的介绍中，我们详细分析了C++对象模型，并且就简单继承给出了验证代码。C++的对象模型中，主要包含如下模型：  </p>
 <ul>
 <li>单继承的C++对象模型</li>
 <li>普通多继承的C++对象模型</li>
@@ -677,7 +677,7 @@ class D : public B1,public B2{...}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于对象"><span class="nav-number">1.</span> <span class="nav-text">关于对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#面向过程编程和面向对象编程"><span class="nav-number">1.1.</span> <span class="nav-text">面向过程编程和面向对象编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#封装的代价"><span class="nav-number">1.2.</span> <span class="nav-text">封装的代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-对象模型是什么"><span class="nav-number">1.3.</span> <span class="nav-text">C++对象模型是什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-对象模型概述"><span class="nav-number">2.</span> <span class="nav-text">2. 对象模型概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-简单对象模型"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 简单对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-表格驱动模型"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 表格驱动模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-C-对象模型"><span class="nav-number">3.</span> <span class="nav-text">3. C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-非继承下的C-对象模型"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 非继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-单继承下的C-对象模型"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 单继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-多继承下的C-对象模型"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 多继承下的C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-普通多继承"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1 普通多继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-菱形继承"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2 菱形继承</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-虚继承下的C-对象模型"><span class="nav-number">4.</span> <span class="nav-text">4. 虚继承下的C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-简单虚继承下的C-对象模型"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 简单虚继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-菱形继承下的C-对象模型"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 菱形继承下的C++对象模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-总结"><span class="nav-number">5.</span> <span class="nav-text">5. 总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于对象"><span class="nav-number">1.</span> <span class="nav-text">关于对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#面向过程编程和面向对象编程"><span class="nav-number">1.1.</span> <span class="nav-text">面向过程编程和面向对象编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#封装的代价"><span class="nav-number">1.2.</span> <span class="nav-text">封装的代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-对象模型是什么"><span class="nav-number">1.3.</span> <span class="nav-text">C++对象模型是什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象模型概述"><span class="nav-number">2.</span> <span class="nav-text">对象模型概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单对象模型"><span class="nav-number">2.1.</span> <span class="nav-text">简单对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表格驱动模型"><span class="nav-number">2.2.</span> <span class="nav-text">表格驱动模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-对象模型"><span class="nav-number">3.</span> <span class="nav-text">C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#非继承下的C-对象模型"><span class="nav-number">3.1.</span> <span class="nav-text">非继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单继承下的C-对象模型"><span class="nav-number">3.2.</span> <span class="nav-text">单继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多继承下的C-对象模型"><span class="nav-number">3.3.</span> <span class="nav-text">多继承下的C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通多继承"><span class="nav-number">3.3.1.</span> <span class="nav-text">普通多继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#菱形继承"><span class="nav-number">3.3.2.</span> <span class="nav-text">菱形继承</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚继承下的C-对象模型"><span class="nav-number">4.</span> <span class="nav-text">虚继承下的C++对象模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单虚继承下的C-对象模型"><span class="nav-number">4.1.</span> <span class="nav-text">简单虚继承下的C++对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#菱形继承下的C-对象模型"><span class="nav-number">4.2.</span> <span class="nav-text">菱形继承下的C++对象模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
